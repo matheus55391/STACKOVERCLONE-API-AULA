@@ -17,13 +17,13 @@ import { ApiTags } from '@nestjs/swagger';
 export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
-  @Post('sigup')
+  @Post('signup')
   async signup() {
-    return true;
+    return 'sigup';
   }
 
   @Post('signin')
   async signin() {
-    return true;
+    return 'sigin';
   }
 }
