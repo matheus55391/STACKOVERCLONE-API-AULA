@@ -52,6 +52,44 @@ export class QuestionService {
     });
   }
 
+  async findManyByTitle(title: string) {
+    const data = await this.prisma.question.findMany({
+      where: {
+        title: {
+          contains: title,
+        },
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+    return data;
+  }
+
+  async findManyByUsername(username: string) {
+    const data = await this.prisma.question.findMany({
+      where: {
+        author: {
+          username: username,
+        },
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+    return data;
+  }
+
   async remove(id: number) {
     return await this.prisma.question.delete({
       where: {

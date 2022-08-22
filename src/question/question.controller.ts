@@ -14,6 +14,7 @@ import {
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { title } from 'process';
 
 @Controller('question')
 export class QuestionController {
@@ -22,14 +23,14 @@ export class QuestionController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Req() req, @Body() createQuestionDto: CreateQuestionDto) {
-    console.log('Req:', req.user);
-    console.log('Body:', createQuestionDto.title);
-    await this.questionService.create(
+    const data = await this.questionService.create(
       createQuestionDto.title,
       createQuestionDto.description,
       req.user.id,
     );
-    return;
+    return await {
+      id: data.id,
+    };
   }
 
   @Get()
@@ -40,6 +41,16 @@ export class QuestionController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.questionService.findOne(+id);
+  }
+
+  @Get('title/:title')
+  async findManyByTitle(@Param('title') title: string) {
+    return this.questionService.findManyByTitle(title);
+  }
+
+  @Get('user/:username')
+  async findManyByUsername(@Param('username') username: string) {
+    return this.questionService.findManyByUsername(username);
   }
 
   @UseGuards(JwtAuthGuard)
