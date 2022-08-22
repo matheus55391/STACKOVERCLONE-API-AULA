@@ -9,6 +9,7 @@ import {
   UseGuards,
   Headers,
   Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -28,7 +29,7 @@ export class QuestionController {
       createQuestionDto.description,
       req.user.id,
     );
-    return true;
+    return;
   }
 
   @Get()
@@ -37,12 +38,16 @@ export class QuestionController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.questionService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionService.remove(+id);
+  async remove(@Req() req, @Param('id') id: string) {
+    const question = await this.questionService.findOne(+id);
+    if (req.user.id == question.author.id)
+      return await this.questionService.remove(+id);
+    throw new UnauthorizedException();
   }
 }

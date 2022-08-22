@@ -36,11 +36,27 @@ export class QuestionService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  async findOne(id: number) {
+    return await this.prisma.question.findFirstOrThrow({
+      where: {
+        id: id,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  async remove(id: number) {
+    return await this.prisma.question.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }
