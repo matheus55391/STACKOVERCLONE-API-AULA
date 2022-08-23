@@ -56,6 +56,7 @@ export class QuestionController {
     const question = await this.questionService.findOne(+id);
     if (req.user.id == question.author.id)
       return await this.questionService.remove(+id);
+
     throw new UnauthorizedException();
   }
 }

@@ -32,6 +32,16 @@ export class QuestionService {
             username: true,
           },
         },
+        answers: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -46,6 +56,16 @@ export class QuestionService {
           select: {
             id: true,
             username: true,
+          },
+        },
+        answers: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
           },
         },
       },
@@ -64,6 +84,16 @@ export class QuestionService {
           select: {
             id: true,
             username: true,
+          },
+        },
+        answers: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
           },
         },
       },
@@ -85,16 +115,32 @@ export class QuestionService {
             username: true,
           },
         },
+        answers: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+        },
       },
     });
     return data;
   }
 
   async remove(id: number) {
-    return await this.prisma.question.delete({
+    await this.prisma.answer.deleteMany({
+      where: {
+        questionId: id,
+      },
+    });
+    await this.prisma.question.delete({
       where: {
         id: id,
       },
     });
+    return 'Answer deleted successfully👽👍🏿';
   }
 }

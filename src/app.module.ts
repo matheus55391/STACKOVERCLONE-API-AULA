@@ -5,9 +5,10 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { QuestionModule } from './question/question.module';
+import { AnswerModule } from './answer/answer.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), UserModule, AuthModule, QuestionModule],
+  imports: [ConfigModule.forRoot(), UserModule, AuthModule, QuestionModule, AnswerModule],
   controllers: [],
   providers: [PrismaService, UserService],
 })
